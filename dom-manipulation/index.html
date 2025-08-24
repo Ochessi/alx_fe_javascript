@@ -1,0 +1,35 @@
+ <!DOCTYPE html>
+<html lang="en">
+ <head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <title>Dynamic Quote Generator</title>
+   <style>
+    body { font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; padding: 24px; max-width: 760px; margin: 0 auto; }
+    h1 { margin-bottom: 12px; }
+    .controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin: 12px 0 20px; }
+    .controls select, .controls button { padding: 8px 10px; border-radius: 8px; border: 1px solid #ccc; }
+    .quote-card { padding: 18px; border: 1px solid #e5e5e5; border-radius: 12px; margin: 10px 0 18px; }
+    .quote-card blockquote { margin: 0 0 6px; font-size: 1.2rem; }
+    .form-container form { display: grid; grid-template-columns: 1fr 220px auto; gap: 10px; align-items: center; }
+    .form-container input, .form-container button { padding: 8px 10px; border-radius: 8px; border: 1px solid #ccc; }
+    @media (max-width: 560px) {
+      .form-container form { grid-template-columns: 1fr; }
+    }
+    #status { font-size: 0.9rem; opacity: 0.8; margin-top: 6px; }
+   </style>
+ </head>
+ <body>
+  <h1>Dynamic Quote Generator</h1>
+
+  <!-- JS will populate these -->
+  <div id="controls" class="controls"></div>
+  <div id="quoteDisplay" class="quote-display" aria-live="polite" role="region"></div>
+  <div id="formContainer" class="form-container"></div>
+
+  <!-- Button exists in HTML, but JS will move it into #controls for nicer layout -->
+  <button id="newQuote">Show New Quote</button>
+
+  <script src="script.js"></script>
+ </body>
+</html>
