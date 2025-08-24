@@ -160,7 +160,7 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
-// ====== Server Sync (GET) ======
+// ====== Server Fetch (raw GET) ======
 async function fetchQuotesFromServer() {
   try {
     const res = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=5');
@@ -182,6 +182,32 @@ async function fetchQuotesFromServer() {
     console.log('Quotes fetched from server and merged.');
   } catch (err) {
     console.error('Error fetching from server:', err);
+  }
+}
+
+// ====== Sync (main) ======
+async function syncQuotes() {
+  try {
+    console.log("🔄 Syncing quotes with server...");
+
+    const res = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=5');
+    const data = await res.json();
+
+    const serverQuotes = data.map((item, i) => ({
+      text: item.title,
+      category: `ServerCat${i % 3}`
+    }));
+
+    // Merge (server precedence)
+    quotes = [...serverQuotes, ...quotes];
+    saveQuotes();
+
+    populateCategories();
+    showRandomQuote();
+
+    console.log("✅ Quotes synced successfully with server.");
+  } catch (err) {
+    console.error("❌ Error syncing quotes:", err);
   }
 }
 
@@ -226,7 +252,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   newQuoteBtn.addEventListener('click', showRandomQuote);
 
-  // Initial fetch + periodic sync
-  fetchQuotesFromServer();
-  setInterval(fetchQuotesFromServer, 60000);
+  // ✅ Initial sync + periodic sync
+  syncQuotes();
+  setInterval(syncQuotes, 60000);
 });
