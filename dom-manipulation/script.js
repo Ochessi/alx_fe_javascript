@@ -92,7 +92,23 @@ function showRandomQuote() {
   renderQuote(text, category);
 }
 
-// ====== Adding Quotes ======
+// ====== Adding & Posting Quotes ======
+async function postQuoteToServer(quote) {
+  try {
+    const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(quote)
+    });
+    const data = await res.json();
+    console.log("Quote posted to server:", data);
+  } catch (err) {
+    console.error("Error posting to server:", err);
+  }
+}
+
 function addQuote() {
   const textInput = document.getElementById('newQuoteText');
   const catInput = document.getElementById('newQuoteCategory');
@@ -105,9 +121,13 @@ function addQuote() {
     return;
   }
 
-  quotes.push({ text, category });
+  const newQ = { text, category };
+  quotes.push(newQ);
   saveQuotes();
   populateCategories();
+
+  // ✅ Sync new quote to server
+  postQuoteToServer(newQ);
 
   textInput.value = '';
   catInput.value = '';
@@ -140,7 +160,7 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
-// ====== Server Sync ======
+// ====== Server Sync (GET) ======
 async function fetchQuotesFromServer() {
   try {
     const res = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=5');
