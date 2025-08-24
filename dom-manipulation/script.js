@@ -168,17 +168,24 @@
   }
 
   // ====== showRandomQuote() ======
+  function filterQuote(category) {
+  if (!category || category === 'all') {
+    return quotes;
+  }
+  return quotes.filter(q => q.category.trim() === category);
+  }
+
   function showRandomQuote() {
-    const selected = categorySelect?.value || 'all';
-    const pool = selected === 'all' ? quotes : quotes.filter(q => q.category.trim() === selected);
+  const selected = categorySelect?.value || 'all';
+  const pool = filterQuote(selected);
 
-    if (!pool.length) {
-      quoteDisplay.textContent = 'No quotes in this category yet. Add one below!';
-      return;
-    }
+  if (!pool.length) {
+    quoteDisplay.textContent = 'No quotes in this category yet. Add one below!';
+    return;
+  }
 
-    const { text, category } = pickRandom(pool);
-    renderQuote(text, category);
+  const { text, category } = pickRandom(pool);
+  renderQuote(text, category);
   }
 
   // ====== Add Quote form ======
