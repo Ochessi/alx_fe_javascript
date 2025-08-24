@@ -96,7 +96,7 @@
   }
 
   // ====== Controls (category + show button) ======
-  function refreshCategorySelect() {
+  function populateCategories() {
     const cats = uniqueCategories();
     categorySelect.innerHTML = '';
 
@@ -124,7 +124,7 @@
     categorySelect = document.createElement('select');
     categorySelect.id = 'categoryFilter';
 
-    refreshCategorySelect();
+    populateCategories();
     label.appendChild(categorySelect);
     controls.appendChild(label);
 
@@ -246,7 +246,7 @@
 
     quotes.push(newQ);
     saveQuotes();           // <-- Local Storage: persist on every change
-    refreshCategorySelect();
+    populateCategories();
     createAddQuoteForm();   // rebuild to refresh datalist
     categorySelect.value = category;
     renderQuote(text, category);
@@ -283,7 +283,7 @@
       if (!confirm('This will replace your current quotes with the default set. Continue?')) return;
       quotes = defaultQuotes.slice();
       saveQuotes();
-      refreshCategorySelect();
+      populateCategories();
       createAddQuoteForm();
       showRandomQuote();
       alert('Reset complete.');
@@ -330,7 +330,7 @@
 
         quotes = cleaned;
         saveQuotes();
-        refreshCategorySelect();
+        populateCategories();
         createAddQuoteForm();
         showRandomQuote();
 
