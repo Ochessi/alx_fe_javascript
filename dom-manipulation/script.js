@@ -24,6 +24,7 @@
   // ====== State ======
   let quotes = [];
   let categorySelect; // will be created dynamically
+  let selectedCategory = 'all'
 
   // ====== LocalStorage helpers ======
   function loadQuotes() {
@@ -141,7 +142,8 @@
 
     // Events
     categorySelect.addEventListener('change', () => {
-      saveLastSelectedCategory(categorySelect.value);
+      selectedCategory = categorySelect.value;
+      saveLastSelectedCategory(selectedCategory); // (session storage optional)
       showRandomQuote();
     });
     newQuoteBtn.addEventListener('click', showRandomQuote);
@@ -176,8 +178,7 @@
   }
 
   function showRandomQuote() {
-  const selected = categorySelect?.value || 'all';
-  const pool = filterQuote(selected);
+  const pool = filterQuote(selectedCategory);
 
   if (!pool.length) {
     quoteDisplay.textContent = 'No quotes in this category yet. Add one below!';
